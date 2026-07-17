@@ -3,7 +3,7 @@
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
   "initializeCommand": "docker network create moat 2>/dev/null || true",
-  "runArgs": ["--network=moat"],
+  "runArgs": ["--network=moat", "--name=moat-devcontainer"],
   "remoteUser": "vscode",
 
   "features": {

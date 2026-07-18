@@ -3,7 +3,12 @@
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
   "initializeCommand": "docker network create moat 2>/dev/null || true",
-  "runArgs": ["--network=moat", "--name=moat-devcontainer"],
+  "runArgs": [
+    "--network=moat",
+    "--name=moat-devcontainer",
+    "--env-file",
+    "${localWorkspaceFolder}/.env"
+  ],
   "remoteUser": "vscode",
 
   "features": {
@@ -42,6 +47,8 @@
       }
     }
   },
+
+  "forwardPorts": [5432, 8080, 8180],
 
   "postCreateCommand": "npm install -g @angular/cli@22"
 }

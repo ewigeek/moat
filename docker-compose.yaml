@@ -14,20 +14,53 @@ services:
     networks:
       - moat
 
+  keycloak_db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ${KEYCLOAK_DB_NAME}
+      POSTGRES_USER: ${KEYCLOAK_DB_USER}
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql
+    networks:
+      - moat
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.0
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      KC_HOSTNAME: ${KC_HOSTNAME}
+      KC_HOSTNAME_STRICT: "false"
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak_db:5432/${KEYCLOAK_DB_NAME}
+      KC_DB_USERNAME: ${KEYCLOAK_DB_USER}
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    ports:
+      - "8180:8080"
+    depends_on:
+      - keycloak_db
+    networks:
+      - moat
+
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
+      network: host
     environment:
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      KEYCLOAK_ISSUER_URI: ${KEYCLOAK_ISSUER_URI}
     ports:
       - "8080:8080"
     depends_on:
       - db
+      - keycloak
     networks:
       - moat
 
@@ -42,6 +75,7 @@ services:
 
 volumes:
   postgres_data:
+  keycloak_postgres_data:
 
 networks:
   moat:

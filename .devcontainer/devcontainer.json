@@ -31,6 +31,7 @@
       "extensions": [
         "pkief.material-icon-theme",
         "ms-azuretools.vscode-docker",
+        "ms-ossdata.vscode-pgsql",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "vscjava.vscode-java-pack",
@@ -43,7 +44,9 @@
         "material-icon-theme.folders.theme": "specific",
         "[java]": {
           "editor.defaultFormatter": "redhat.java"
-        }
+        },
+        "java.configuration.updateBuildConfiguration": "interactive",
+        "java.compile.nullAnalysis.mode": "automatic"
       }
     }
   },

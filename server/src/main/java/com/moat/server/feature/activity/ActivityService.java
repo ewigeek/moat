@@ -2,6 +2,8 @@ package com.moat.server.feature.activity;
 
 import com.moat.server.feature.activity.dto.ActivityResponse;
 import com.moat.server.feature.activity.dto.CreateActivityRequest;
+import com.moat.server.shared.exception.ResourceNotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,7 @@ public class ActivityService {
     public ActivityResponse getById(UUID id, UUID userId) {
         return activityRepository.findByIdAndUserId(id, userId)
                 .map(activityMapper::toResponse)
-                .orElseThrow(() -> new RuntimeException("Activity not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Activity not found"));
     }
 
     @Transactional
@@ -46,7 +48,7 @@ public class ActivityService {
     @Transactional
     public void delete(UUID id, UUID userId) {
         var activity = activityRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(() -> new RuntimeException("Activity not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Activity not found"));
         activityRepository.delete(activity);
     }
 }

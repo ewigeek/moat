@@ -24,35 +24,30 @@ public class ActivityController {
         this.userService = userService;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ActivityResponse create(@Valid @RequestBody CreateActivityRequest request,
+            @AuthenticationPrincipal Jwt jwt) {
+        UUID userId = userService.resolveUserId(jwt);
+        return activityService.create(request, userId);
+    }
+
     @GetMapping
     public List<ActivityResponse> getAll(@AuthenticationPrincipal Jwt jwt) {
-        UUID userId = resolveUserId(jwt);
+        UUID userId = userService.resolveUserId(jwt);
         return activityService.getAll(userId);
     }
 
     @GetMapping("/{id}")
     public ActivityResponse getById(@PathVariable UUID id, @AuthenticationPrincipal Jwt jwt) {
-        UUID userId = resolveUserId(jwt);
+        UUID userId = userService.resolveUserId(jwt);
         return activityService.getById(id, userId);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ActivityResponse create(@Valid @RequestBody CreateActivityRequest request,
-            @AuthenticationPrincipal Jwt jwt) {
-        UUID userId = resolveUserId(jwt);
-        return activityService.create(request, userId);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id, @AuthenticationPrincipal Jwt jwt) {
-        UUID userId = resolveUserId(jwt);
+        UUID userId = userService.resolveUserId(jwt);
         activityService.delete(id, userId);
-    }
-
-    private UUID resolveUserId(Jwt jwt) {
-        UUID keycloakId = UUID.fromString(jwt.getSubject());
-        return userService.getOrCreate(keycloakId).getId();
     }
 }

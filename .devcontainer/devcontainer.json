@@ -36,7 +36,8 @@
         "dbaeumer.vscode-eslint",
         "vscjava.vscode-java-pack",
         "vmware.vscode-spring-boot",
-        "angular.ng-template"
+        "angular.ng-template",
+        "GitHub.github-vscode-theme"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -46,7 +47,8 @@
           "editor.defaultFormatter": "redhat.java"
         },
         "java.configuration.updateBuildConfiguration": "interactive",
-        "java.compile.nullAnalysis.mode": "automatic"
+        "java.compile.nullAnalysis.mode": "automatic",
+        "workbench.colorTheme": "GitHub Dark Default"
       }
     }
   },

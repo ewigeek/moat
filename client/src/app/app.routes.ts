@@ -1,3 +1,7 @@
 import { Routes } from '@angular/router';
+import { ActivityList } from './feature/activity/activity-list/activity-list';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: 'activities', pathMatch: 'full' },
+  { path: 'activities', component: ActivityList },
+];

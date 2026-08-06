@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Activity, ActivityResponse } from '../activity';
+import { ActivityForm } from '../activity-form/activity-form';
 
 @Component({
   selector: 'app-activity-list',
-  imports: [CommonModule],
+  imports: [ActivityForm],
   templateUrl: './activity-list.html',
   styleUrl: './activity-list.scss',
 })
@@ -16,18 +16,24 @@ export class ActivityList implements OnInit {
   error = signal<string | null>(null);
 
   ngOnInit() {
-    console.log('ActivityList init');
+    this.load();
+  }
+
+  load() {
     this.loading.set(true);
     this.activityService.getAll().subscribe({
       next: (data) => {
         this.activities.set(data);
         this.loading.set(false);
       },
-      error: (err) => {
-        console.error('Error:', err);
-        this.error.set('Cannot load activities');
+      error: () => {
+        this.error.set('Failed to load activities');
         this.loading.set(false);
       },
     });
+  }
+
+  onCreated(activity: ActivityResponse) {
+    this.activities.update((list) => [...list, activity]);
   }
 }

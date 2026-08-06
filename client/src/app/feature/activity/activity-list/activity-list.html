@@ -1,0 +1,13 @@
+<div>
+  @if (loading()) {
+    <p>Загрузка...</p>
+  } @else if (error()) {
+    <p>{{ error() }}</p>
+  } @else {
+    <ul>
+      @for (activity of activities(); track activity.id) {
+        <li>{{ activity.name }}</li>
+      }
+    </ul>
+  }
+</div>

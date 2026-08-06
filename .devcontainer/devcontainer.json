@@ -37,7 +37,8 @@
         "vscjava.vscode-java-pack",
         "vmware.vscode-spring-boot",
         "angular.ng-template",
-        "GitHub.github-vscode-theme"
+        "GitHub.github-vscode-theme",
+        "eamodio.gitlens"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -53,7 +54,7 @@
     }
   },
 
-  "forwardPorts": [8081],
+  "forwardPorts": [8081, 4200],
 
   "postCreateCommand": "npm install -g @angular/cli@22"
 }

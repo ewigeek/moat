@@ -1,6 +1,8 @@
 <div>
+  <app-activity-form (created)="onCreated($event)" />
+
   @if (loading()) {
-    <p>Загрузка...</p>
+    <p>Loading...</p>
   } @else if (error()) {
     <p>{{ error() }}</p>
   } @else {

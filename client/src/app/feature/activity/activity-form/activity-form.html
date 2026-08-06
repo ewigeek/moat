@@ -1,0 +1,6 @@
+<div>
+  <input [(ngModel)]="name" placeholder="Activity name" />
+  <button (click)="submit()" [disabled]="loading">
+    {{ loading ? 'Creating...' : 'Create' }}
+  </button>
+</div>

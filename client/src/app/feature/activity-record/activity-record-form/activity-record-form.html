@@ -1,0 +1,13 @@
+<div>
+  <select [(ngModel)]="activityId">
+    <option value="">Select activity</option>
+    @for (activity of activities(); track activity.id) {
+      <option [value]="activity.id">{{ activity.name }}</option>
+    }
+  </select>
+  <input [(ngModel)]="date" type="date" />
+  <input [(ngModel)]="durationMinutes" type="number" placeholder="Duration (minutes)" />
+  <button (click)="submit()" [disabled]="loading">
+    {{ loading ? 'Creating...' : 'Create record' }}
+  </button>
+</div>

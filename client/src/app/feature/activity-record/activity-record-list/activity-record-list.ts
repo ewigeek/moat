@@ -1,5 +1,6 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivityRecord, ActivityRecordResponse } from '../activity-record';
+import { Component, inject } from '@angular/core';
+import { ActivityRecordStore } from '../activity-record.store';
+import { ActivityStore } from '../../activity/activity.store';
 import { ActivityRecordForm } from '../activity-record-form/activity-record-form';
 
 @Component({
@@ -8,32 +9,11 @@ import { ActivityRecordForm } from '../activity-record-form/activity-record-form
   templateUrl: './activity-record-list.html',
   styleUrl: './activity-record-list.scss',
 })
-export class ActivityRecordList implements OnInit {
-  private readonly activityRecordService = inject(ActivityRecord);
+export class ActivityRecordList {
+  readonly store = inject(ActivityRecordStore);
+  readonly activityStore = inject(ActivityStore);
 
-  records = signal<ActivityRecordResponse[]>([]);
-  loading = signal(false);
-  error = signal<string | null>(null);
-
-  ngOnInit() {
-    this.load();
-  }
-
-  load() {
-    this.loading.set(true);
-    this.activityRecordService.getAll().subscribe({
-      next: (data) => {
-        this.records.set(data);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Failed to load activity records');
-        this.loading.set(false);
-      },
-    });
-  }
-
-  onCreated(record: ActivityRecordResponse) {
-    this.records.update((list) => [...list, record]);
+  getActivityName(activityId: string): string {
+    return this.activityStore.activities().find((a) => a.id === activityId)?.name ?? activityId;
   }
 }

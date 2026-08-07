@@ -1,6 +1,7 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Activity, ActivityResponse, CreateActivityRequest } from '../activity';
+import { Activity, CreateActivityRequest } from '../activity';
+import { ActivityStore } from '../activity.store';
 
 @Component({
   selector: 'app-activity-form',
@@ -10,8 +11,7 @@ import { Activity, ActivityResponse, CreateActivityRequest } from '../activity';
 })
 export class ActivityForm {
   private readonly activityService = inject(Activity);
-
-  created = output<ActivityResponse>();
+  private readonly store = inject(ActivityStore);
 
   name = '';
   loading = false;
@@ -24,7 +24,7 @@ export class ActivityForm {
 
     this.activityService.create(request).subscribe({
       next: (activity) => {
-        this.created.emit(activity);
+        this.store.addActivity(activity);
         this.name = '';
         this.loading = false;
       },

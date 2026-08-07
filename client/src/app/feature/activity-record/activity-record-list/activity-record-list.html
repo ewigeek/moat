@@ -1,14 +1,14 @@
 <div>
-  <app-activity-record-form (created)="onCreated($event)" />
+  <app-activity-record-form />
 
-  @if (loading()) {
+  @if (store.loading()) {
     <p>Loading...</p>
-  } @else if (error()) {
-    <p>{{ error() }}</p>
+  } @else if (store.error()) {
+    <p>{{ store.error() }}</p>
   } @else {
     <ul>
-      @for (record of records(); track record.id) {
-        <li>{{ record.date }} — {{ record.activityId }}</li>
+      @for (record of store.records(); track record.id) {
+        <li>{{ record.date }} — {{ getActivityName(record.activityId) }}</li>
       }
     </ul>
   }

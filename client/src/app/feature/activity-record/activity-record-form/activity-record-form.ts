@@ -1,11 +1,8 @@
-import { Component, inject, OnInit, output, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Activity, ActivityResponse } from '../../activity/activity';
-import {
-  ActivityRecord,
-  ActivityRecordResponse,
-  CreateActivityRecordRequest,
-} from '../activity-record';
+import { ActivityRecord, CreateActivityRecordRequest } from '../activity-record';
+import { ActivityRecordStore } from '../activity-record.store';
+import { ActivityStore } from '../../activity/activity.store';
 
 @Component({
   selector: 'app-activity-record-form',
@@ -13,23 +10,15 @@ import {
   templateUrl: './activity-record-form.html',
   styleUrl: './activity-record-form.scss',
 })
-export class ActivityRecordForm implements OnInit {
+export class ActivityRecordForm {
   private readonly activityRecordService = inject(ActivityRecord);
-  private readonly activityService = inject(Activity);
+  private readonly store = inject(ActivityRecordStore);
+  readonly activityStore = inject(ActivityStore);
 
-  created = output<ActivityRecordResponse>();
-
-  activities = signal<ActivityResponse[]>([]);
   activityId = '';
   date = '';
   durationMinutes: number | null = null;
   loading = false;
-
-  ngOnInit() {
-    this.activityService.getAll().subscribe({
-      next: (data) => this.activities.set(data),
-    });
-  }
 
   submit() {
     if (!this.activityId || !this.date) return;
@@ -43,7 +32,7 @@ export class ActivityRecordForm implements OnInit {
 
     this.activityRecordService.create(request).subscribe({
       next: (record) => {
-        this.created.emit(record);
+        this.store.addRecord(record);
         this.activityId = '';
         this.date = '';
         this.durationMinutes = null;

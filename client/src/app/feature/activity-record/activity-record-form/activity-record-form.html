@@ -1,7 +1,7 @@
 <div>
   <select [(ngModel)]="activityId">
     <option value="">Select activity</option>
-    @for (activity of activities(); track activity.id) {
+    @for (activity of activityStore.activities(); track activity.id) {
       <option [value]="activity.id">{{ activity.name }}</option>
     }
   </select>

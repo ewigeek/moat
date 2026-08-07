@@ -1,13 +1,13 @@
 <div>
-  <app-activity-form (created)="onCreated($event)" />
+  <app-activity-form />
 
-  @if (loading()) {
+  @if (store.loading()) {
     <p>Loading...</p>
-  } @else if (error()) {
-    <p>{{ error() }}</p>
+  } @else if (store.error()) {
+    <p>{{ store.error() }}</p>
   } @else {
     <ul>
-      @for (activity of activities(); track activity.id) {
+      @for (activity of store.activities(); track activity.id) {
         <li>{{ activity.name }}</li>
       }
     </ul>

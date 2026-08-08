@@ -1,5 +1,29 @@
-<nav>
-  <a routerLink="/activities">Activities</a>
-  <a routerLink="/activity-records">Records</a>
-</nav>
-<router-outlet />
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-logo">MOAT<span class="accent">.</span></div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Overview</p>
+      <a routerLink="/activities" routerLinkActive="active" class="nav-item">
+        <i class="ti ti-activity" aria-hidden="true"></i>
+        Activities
+      </a>
+      <a routerLink="/activity-records" routerLinkActive="active" class="nav-item">
+        <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+        Records
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <p class="nav-section-label">Account</p>
+      <button class="nav-item nav-item--button">
+        <mat-icon>logout</mat-icon>
+        Sign out
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>

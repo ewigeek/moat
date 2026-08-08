@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
@@ -9,6 +13,7 @@ import {
   UserActivityService,
   withAutoRefreshToken,
 } from 'keycloak-angular';
+import { MatNativeDateModule } from '@angular/material/core';
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
@@ -40,5 +45,6 @@ export const appConfig: ApplicationConfig = {
       ],
       providers: [AutoRefreshTokenService, UserActivityService],
     }),
+    importProvidersFrom(MatNativeDateModule),
   ],
 };

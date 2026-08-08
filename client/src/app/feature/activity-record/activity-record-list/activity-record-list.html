@@ -1,15 +1,49 @@
-<div>
-  <app-activity-record-form />
+<div class="page-shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Records</h1>
+      <p class="page-subtitle">Log your activity sessions</p>
+    </div>
+    <button mat-flat-button (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      New record
+    </button>
+  </div>
 
   @if (store.loading()) {
-    <p>Loading...</p>
+    <p class="state-message">Loading...</p>
   } @else if (store.error()) {
-    <p>{{ store.error() }}</p>
+    <p class="state-message state-message--error">{{ store.error() }}</p>
   } @else {
-    <ul>
-      @for (record of store.records(); track record.id) {
-        <li>{{ record.date }} — {{ getActivityName(record.activityId) }}</li>
-      }
-    </ul>
+    <mat-table [dataSource]="store.records()" class="records-table">
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+        <mat-cell *matCellDef="let record">{{ record.date }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="activity">
+        <mat-header-cell *matHeaderCellDef>Activity</mat-header-cell>
+        <mat-cell *matCellDef="let record">{{ getActivityName(record.activityId) }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="duration">
+        <mat-header-cell *matHeaderCellDef>Duration</mat-header-cell>
+        <mat-cell *matCellDef="let record">
+          {{ record.durationMinutes ? record.durationMinutes + ' min' : '—' }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let record" class="actions-cell">
+          <button mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
   }
 </div>

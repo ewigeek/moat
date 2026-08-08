@@ -1,15 +1,37 @@
-<div>
-  <app-activity-form />
+<div class="page-shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Activities</h1>
+      <p class="page-subtitle">Track what you do regularly</p>
+    </div>
+    <button mat-flat-button (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      New activity
+    </button>
+  </div>
 
   @if (store.loading()) {
-    <p>Loading...</p>
+    <p class="state-message">Loading...</p>
   } @else if (store.error()) {
-    <p>{{ store.error() }}</p>
+    <p class="state-message state-message--error">{{ store.error() }}</p>
   } @else {
-    <ul>
-      @for (activity of store.activities(); track activity.id) {
-        <li>{{ activity.name }}</li>
-      }
-    </ul>
+    <mat-table [dataSource]="store.activities()" class="activities-table">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let activity">{{ activity.name }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let activity" class="actions-cell">
+          <button mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
   }
 </div>

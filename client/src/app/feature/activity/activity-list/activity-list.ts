@@ -19,6 +19,6 @@ export class ActivityList {
   readonly displayedColumns = ['name', 'actions'];
 
   openCreateDialog() {
-    this.dialog.open(ActivityForm, { width: '400px' });
+    this.dialog.open(ActivityForm, { panelClass: 'moat-dialog' });
   }
 }

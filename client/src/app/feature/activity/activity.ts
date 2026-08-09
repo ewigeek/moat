@@ -6,12 +6,14 @@ import { environment } from '../../../environments/environment';
 export interface ActivityResponse {
   id: string;
   name: string;
+  description: string | undefined;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateActivityRequest {
   name: string;
+  description?: string;
 }
 
 @Service()

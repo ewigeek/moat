@@ -21,7 +21,7 @@ export class ActivityRecordList {
   readonly displayedColumns = ['date', 'activity', 'duration', 'actions'];
 
   openCreateDialog() {
-    this.dialog.open(ActivityRecordForm, { width: '420px' });
+    this.dialog.open(ActivityRecordForm, { panelClass: 'moat-dialog' });
   }
 
   getActivityName(activityId: string): string {

@@ -23,3 +23,13 @@ body {
   padding: 0;
   overflow: hidden;
 }
+
+.mat-mdc-dialog-surface {
+  border-radius: 12px !important;
+  padding: 0 !important;
+}
+
+.moat-dialog .mat-mdc-dialog-surface {
+  width: fit-content;
+  max-width: 90vw;
+}

@@ -1,15 +1,38 @@
-<h2 mat-dialog-title>New activity</h2>
+<div class="dialog">
+  <div class="dialog-header">
+    <div class="dialog-title">New activity</div>
+    <div class="dialog-sub">Give your activity a name to start tracking it</div>
+  </div>
 
-<mat-dialog-content>
-  <mat-form-field appearance="outline" style="width: 100%">
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="name" placeholder="e.g. Bouldering" (keyup.enter)="submit()" />
-  </mat-form-field>
-</mat-dialog-content>
+  <form class="fields" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="activity-name">Name</label>
+      <input
+        id="activity-name"
+        type="text"
+        formControlName="name"
+        placeholder="e.g. Bouldering"
+        [class.invalid]="nameControl.invalid && nameControl.touched"
+      />
+      @if (nameControl.invalid && nameControl.touched) {
+        <span class="field-error">Name is required</span>
+      }
+    </div>
 
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button (click)="submit()" [disabled]="!name.trim() || loading">
-    {{ loading ? 'Creating...' : 'Create' }}
-  </button>
-</mat-dialog-actions>
+    <div class="field">
+      <label for="activity-desc">Description <span class="field-optional">optional</span></label>
+      <textarea
+        id="activity-desc"
+        formControlName="description"
+        placeholder="What is this activity about?"
+      ></textarea>
+    </div>
+  </form>
+
+  <div class="actions">
+    <button class="btn-cancel" type="button" (click)="cancel()">Cancel</button>
+    <button class="btn-primary" type="button" (click)="submit()" [disabled]="loading">
+      {{ loading ? 'Creating...' : 'Create activity' }}
+    </button>
+  </div>
+</div>

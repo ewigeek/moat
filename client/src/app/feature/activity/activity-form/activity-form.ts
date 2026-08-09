@@ -1,15 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Activity, CreateActivityRequest } from '../activity';
 import { ActivityStore } from '../activity.store';
 
 @Component({
   selector: 'app-activity-form',
-  imports: [FormsModule, MatDialogModule, MatButtonModule, MatInputModule, MatFormFieldModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './activity-form.html',
   styleUrl: './activity-form.scss',
 })
@@ -18,14 +15,29 @@ export class ActivityForm {
   private readonly activityService = inject(Activity);
   private readonly store = inject(ActivityStore);
 
-  name = '';
+  form = new FormGroup({
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    description: new FormControl('', { nonNullable: true }),
+  });
+
   loading = false;
 
+  get nameControl() {
+    return this.form.controls.name;
+  }
+
   submit() {
-    if (!this.name.trim()) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
-    const request: CreateActivityRequest = { name: this.name };
+    const { name, description } = this.form.getRawValue();
+    const request: CreateActivityRequest = {
+      name: name.trim(),
+      description: description.trim() || undefined,
+    };
 
     this.activityService.create(request).subscribe({
       next: (activity) => {
@@ -36,5 +48,9 @@ export class ActivityForm {
         this.loading = false;
       },
     });
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 }
